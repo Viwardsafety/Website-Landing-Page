@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viward Safety Ltd — Safety & Engineering Consultancy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0c0f;
+    --deep: #0f1318;
+    --panel: #141a22;
+    --border: #1e2832;
+    --muted: #2a3545;
+    --text-dim: #5a7080;
+    --text-mid: #8fa8b8;
+    --text: #d8e8f0;
+    --white: #f0f8ff;
+    --amber: #f0a500;
+    --amber-dim: #b87c00;
+    --amber-glow: rgba(240,165,0,0.12);
+    --green: #1fdb88;
+    --accent-blue: #3ab8ff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ─── UTILITY ─── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; position: relative; }
+  .mono { font-family: 'DM Mono', monospace; }
+  .amber { color: var(--amber); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,12,15,0.85);
+    backdrop-filter: blur(16px);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .logo-mark {
+    width: 34px; height: 34px;
+    border: 2px solid var(--amber);
+    display: grid; place-items: center;
+    font-family: 'Bebas Neue'; font-size: 18px; color: var(--amber);
+    letter-spacing: 1px;
+    position: relative;
+  }
+  .logo-mark::before {
+    content: '';
+    position: absolute; inset: 3px;
+    border: 1px solid rgba(240,165,0,0.3);
+  }
+  .logo-text {
+    font-family: 'Bebas Neue'; font-size: 22px; letter-spacing: 3px;
+    color: var(--white); text-transform: uppercase;
+  }
+  .logo-text span { color: var(--amber); }
+  .nav-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .nav-links a {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px;
+    color: var(--text-mid); text-decoration: none; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--amber); }
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 20px; cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--amber); color: var(--black); }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding-top: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(30,40,50,0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,40,50,0.4) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%);
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(240,165,0,0.06) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 1;
+    max-width: 800px;
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px;
+    color: var(--amber); text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.7s ease 0.2s forwards;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 28px; height: 1px; background: var(--amber);
+  }
+  .hero-title {
+    font-family: 'Bebas Neue'; font-size: clamp(60px, 9vw, 110px);
+    line-height: 0.9; letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards;
+  }
+  .hero-title .line2 { color: var(--amber); display: block; }
+  .hero-sub {
+    font-size: 16px; line-height: 1.8; color: var(--text-mid);
+    max-width: 520px; margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.7s ease 0.65s forwards;
+  }
+  .btn-primary {
+    background: var(--amber); color: var(--black);
+    font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase; border: none;
+    padding: 14px 32px; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: all 0.2s; font-weight: 500;
+  }
+  .btn-primary:hover { background: #ffc030; transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 32px; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    border: 1px solid var(--muted);
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--text-mid); color: var(--white); }
+
+  .hero-stats {
+    display: flex; gap: 3rem;
+    margin-top: 5rem; padding-top: 3rem;
+    border-top: 1px solid var(--border);
+    opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+  .stat-val {
+    font-family: 'Bebas Neue'; font-size: 42px; color: var(--amber);
+    line-height: 1; display: block;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+    color: var(--text-dim); text-transform: uppercase; margin-top: 6px;
+  }
+
+  /* ─── SECTION SHARED ─── */
+  section { position: relative; z-index: 1; }
+  .section-header { margin-bottom: 4rem; }
+  .section-tag {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 3px;
+    color: var(--amber); text-transform: uppercase; display: block; margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue'; font-size: clamp(38px, 5vw, 58px);
+    letter-spacing: 2px; color: var(--white); line-height: 1;
+  }
+  .section-desc {
+    color: var(--text-mid); font-size: 15px; line-height: 1.8;
+    max-width: 580px; margin-top: 1rem;
+  }
+
+  /* ─── WHAT WE DO ─── */
+  #services { padding: 120px 0; }
+
+  .services-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .service-group {
+    background: var(--deep); padding: 3rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-group:hover { background: var(--panel); }
+  .service-group::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; background: var(--amber);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .service-group:hover::before { transform: scaleX(1); }
+  .group-number {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px;
+    color: var(--amber-dim); margin-bottom: 0.5rem; display: block;
+  }
+  .group-title {
+    font-family: 'Bebas Neue'; font-size: 28px; letter-spacing: 2px;
+    color: var(--white); margin-bottom: 1.5rem;
+  }
+  .group-icon {
+    width: 40px; height: 40px; margin-bottom: 1.5rem;
+    color: var(--amber); opacity: 0.7;
+  }
+  .service-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .service-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; color: var(--text-mid);
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(30,40,50,0.6);
+  }
+  .service-list li:last-child { border-bottom: none; }
+  .service-list li::before {
+    content: '◈';
+    color: var(--amber); font-size: 9px; margin-top: 5px; flex-shrink: 0;
+  }
+  .service-list li:hover { color: var(--text); }
+
+  /* Wide spanning service groups */
+  .service-group.wide { grid-column: span 2; }
+
+  /* ─── HOW WE WORK ─── */
+  #approach { padding: 120px 0; background: var(--deep); }
+  #approach::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(240,165,0,0.02) 50%, transparent 100%);
+  }
+  .approach-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border: 1px solid var(--border);
+  }
+  .approach-step {
+    padding: 2.5rem 2rem; border-right: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .approach-step:last-child { border-right: none; }
+  .approach-step:hover { background: rgba(240,165,0,0.04); }
+  .step-number {
+    font-family: 'Bebas Neue'; font-size: 64px; color: var(--border);
+    line-height: 1; margin-bottom: 1rem;
+    transition: color 0.3s;
+  }
+  .approach-step:hover .step-number { color: rgba(240,165,0,0.15); }
+  .step-title {
+    font-family: 'DM Sans'; font-weight: 500; font-size: 15px;
+    color: var(--white); margin-bottom: 0.75rem;
+  }
+  .step-desc { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+
+  /* ─── SECTORS ─── */
+  #sectors { padding: 120px 0; }
+  .sectors-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+  .sector-card {
+    background: var(--deep); padding: 2.5rem 2rem;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .sector-card:hover { background: var(--panel); }
+  .sector-icon { font-size: 24px; margin-bottom: 1rem; display: block; }
+  .sector-name {
+    font-family: 'DM Sans'; font-weight: 500; font-size: 15px;
+    color: var(--white); margin-bottom: 0.5rem;
+  }
+  .sector-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+
+  /* ─── WHY VIWARD ─── */
+  #why { padding: 120px 0; background: var(--deep); }
+  .why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .why-text {}
+  .why-list { list-style: none; margin-top: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+  .why-item { display: flex; gap: 1.25rem; align-items: flex-start; }
+  .why-bullet {
+    width: 28px; height: 28px; flex-shrink: 0;
+    border: 1px solid var(--amber); display: grid; place-items: center;
+    color: var(--amber); font-size: 12px; font-family: 'DM Mono', monospace;
+    margin-top: 2px;
+  }
+  .why-item-title { font-weight: 500; color: var(--white); font-size: 15px; margin-bottom: 4px; }
+  .why-item-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .why-visual {
+    position: relative; padding: 3rem;
+    border: 1px solid var(--border);
+    background: var(--panel);
+  }
+  .why-visual::before {
+    content: '';
+    position: absolute; top: -1px; left: 3rem; right: 3rem; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  }
+  .compliance-badge {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .badge-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    background: var(--deep);
+    transition: border-color 0.2s;
+  }
+  .badge-item:hover { border-color: var(--amber-dim); }
+  .badge-dot {
+    width: 8px; height: 8px; background: var(--green);
+    border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px var(--green);
+  }
+  .badge-dot.amber { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+  .badge-text { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-mid); }
+  .badge-check { margin-left: auto; color: var(--green); font-size: 14px; }
+
+  /* ─── CONTACT ─── */
+  #contact { padding: 120px 0; }
+  .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+  .contact-info {}
+  .contact-detail {
+    display: flex; gap: 1rem; align-items: flex-start;
+    margin-bottom: 1.5rem; padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .contact-detail:last-child { border-bottom: none; }
+  .contact-label {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+    color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; display: block;
+  }
+  .contact-val { color: var(--text); font-size: 14px; }
+  .contact-icon { color: var(--amber); width: 20px; flex-shrink: 0; margin-top: 2px; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-label {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+    color: var(--text-dim); text-transform: uppercase;
+  }
+  .form-input, .form-select, .form-textarea {
+    background: var(--panel); border: 1px solid var(--border);
+    color: var(--text); padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--amber); }
+  .form-textarea { min-height: 120px; resize: vertical; }
+  .form-select { appearance: none; }
+  option { background: var(--panel); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 0;
+    background: var(--black);
+  }
+  .footer-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+  }
+  .footer-copy {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dim);
+  }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px;
+    color: var(--text-dim); text-decoration: none; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--amber); }
+  .footer-accred {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dim);
+  }
+  .footer-accred::before {
+    content: '■'; color: var(--amber); font-size: 8px;
+  }
+
+  /* ─── DIVIDER LINE ─── */
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── TICKER ─── */
+  .ticker-wrap {
+    overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: var(--deep); padding: 12px 0;
+  }
+  .ticker {
+    display: flex; gap: 3rem;
+    animation: ticker 25s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px;
+    color: var(--text-dim); text-transform: uppercase; flex-shrink: 0;
+  }
+  .ticker-item .sep { color: var(--amber); margin: 0 0.5rem; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .services-layout { grid-template-columns: 1fr; }
+    .service-group.wide { grid-column: span 1; }
+    .approach-grid { grid-template-columns: 1fr 1fr; }
+    .approach-step { border-bottom: 1px solid var(--border); }
+    .approach-step:nth-child(2) { border-right: none; }
+    .approach-step:nth-child(3) { border-bottom: none; }
+    .sectors-grid { grid-template-columns: 1fr 1fr; }
+    .why-layout, .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 2rem; flex-wrap: wrap; }
+  }
+
+  @media (max-width: 600px) {
+    .approach-grid { grid-template-columns: 1fr; }
+    .sectors-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-mark">VS</div>
+      <span class="logo-text">Viward <span>Safety</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#sectors">Sectors</a></li>
+      <li><a href="#why">Why Us</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Get in Touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-tag">Safety &amp; Engineering Consultancy</div>
+      <h1 class="hero-title">
+        Engineering<br><span class="line2">Safer Systems</span>
+      </h1>
+      <p class="hero-sub">
+        Viward Safety Ltd delivers expert safety and engineering consultancy — from hazard identification through to full safety case substantiation. Independent, thorough, and trusted.
+      </p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-primary">Our Services</a>
+        <a href="#contact" class="btn-ghost">Request a Consultation</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <span class="stat-val">ISO</span>
+          <span class="stat-label">Standards Aligned</span>
+        </div>
+        <div>
+          <span class="stat-val">100%</span>
+          <span class="stat-label">Independent Assessment</span>
+        </div>
+        <div>
+          <span class="stat-val">Full</span>
+          <span class="stat-label">Lifecycle Coverage</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Hazard Identification <span class="sep">◆</span></span>
+    <span class="ticker-item">Safety Case Reports <span class="sep">◆</span></span>
+    <span class="ticker-item">Independent Safety Audits <span class="sep">◆</span></span>
+    <span class="ticker-item">Engineering Substantiation <span class="sep">◆</span></span>
+    <span class="ticker-item">Peer Review <span class="sep">◆</span></span>
+    <span class="ticker-item">Periodic Reviews of Safety <span class="sep">◆</span></span>
+    <span class="ticker-item">Risk Management <span class="sep">◆</span></span>
+    <span class="ticker-item">Technical Assessments <span class="sep">◆</span></span>
+    <!-- Duplicate for seamless loop -->
+    <span class="ticker-item">Hazard Identification <span class="sep">◆</span></span>
+    <span class="ticker-item">Safety Case Reports <span class="sep">◆</span></span>
+    <span class="ticker-item">Independent Safety Audits <span class="sep">◆</span></span>
+    <span class="ticker-item">Engineering Substantiation <span class="sep">◆</span></span>
+    <span class="ticker-item">Peer Review <span class="sep">◆</span></span>
+    <span class="ticker-item">Periodic Reviews of Safety <span class="sep">◆</span></span>
+    <span class="ticker-item">Risk Management <span class="sep">◆</span></span>
+    <span class="ticker-item">Technical Assessments <span class="sep">◆</span></span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">What We Provide</span>
+      <h2 class="section-title">Our Services</h2>
+      <p class="section-desc">Comprehensive safety and engineering consultancy spanning the full project lifecycle — from early hazard identification through to formal safety case substantiation.</p>
+    </div>
+
+    <div class="services-layout reveal">
+
+      <!-- Safety Management -->
+      <div class="service-group">
+        <span class="group-number">01</span>
+        <svg class="group-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20 4L4 12v12c0 7 7 12 16 12s16-5 16-12V12L20 4z"/>
+          <path d="M14 20l4 4 8-8" stroke-linecap="round"/>
+        </svg>
+        <div class="group-title">Safety Management</div>
+        <ul class="service-list">
+          <li>Hazard Identification</li>
+          <li>Hazard Assessments</li>
+          <li>Hazard Management</li>
+          <li>Hazard Logs</li>
+          <li>Safety Management Plans</li>
+          <li>Safety Case Reports</li>
+        </ul>
+      </div>
+
+      <!-- Independent Assurance -->
+      <div class="service-group">
+        <span class="group-number">02</span>
+        <svg class="group-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="20" cy="20" r="14"/>
+          <path d="M20 8v4M20 28v4M8 20h4M28 20h4"/>
+          <circle cx="20" cy="20" r="5"/>
+        </svg>
+        <div class="group-title">Independent Assurance</div>
+        <ul class="service-list">
+          <li>Independent Safety Audits</li>
+          <li>Peer Review</li>
+          <li>Independent Technical Assessments</li>
+          <li>Safety Committee Representatives</li>
+          <li>Technical &amp; Process Advice</li>
+        </ul>
+      </div>
+
+      <!-- Engineering & Substantiation -->
+      <div class="service-group">
+        <span class="group-number">03</span>
+        <svg class="group-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="4" y="8" width="32" height="24" rx="1"/>
+          <path d="M12 16h16M12 20h10M12 24h13"/>
+          <path d="M28 24l4-4-4-4"/>
+        </svg>
+        <div class="group-title">Engineering &amp; Substantiation</div>
+        <ul class="service-list">
+          <li>Fault Schedules</li>
+          <li>Engineering Schedules</li>
+          <li>Hazard Assessments</li>
+          <li>Periodic Reviews of Safety</li>
+          <li>Engineering Substantiation</li>
+        </ul>
+      </div>
+
+      <!-- Formal Documentation -->
+      <div class="service-group">
+        <span class="group-number">04</span>
+        <svg class="group-icon" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M8 4h18l8 8v24H8V4z"/>
+          <path d="M26 4v8h8"/>
+          <path d="M14 18h12M14 23h12M14 28h8"/>
+        </svg>
+        <div class="group-title">Formal Documentation</div>
+        <ul class="service-list">
+          <li>Safety Case Reports</li>
+          <li>Safety Management Plans</li>
+          <li>Engineering Schedules</li>
+          <li>Fault Schedules</li>
+          <li>Hazard Logs &amp; Registers</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section id="approach">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Our Methodology</span>
+      <h2 class="section-title">How We Work</h2>
+      <p class="section-desc">A structured, evidence-based approach that delivers rigorous safety outcomes with full auditability at every stage.</p>
+    </div>
+    <div class="approach-grid reveal">
+      <div class="approach-step">
+        <div class="step-number">01</div>
+        <div class="step-title">Understand &amp; Scope</div>
+        <p class="step-desc">We begin by thoroughly understanding your system, operational context, and safety obligations to define a focused, proportionate engagement.</p>
+      </div>
+      <div class="approach-step">
+        <div class="step-number">02</div>
+        <div class="step-title">Identify &amp; Assess</div>
+        <p class="step-desc">Using recognised methodologies — HAZID, FMEA, FTA, bowtie analysis — we systematically identify hazards and assess their risk significance.</p>
+      </div>
+      <div class="approach-step">
+        <div class="step-number">03</div>
+        <div class="step-title">Manage &amp; Substantiate</div>
+        <p class="step-desc">We develop practical mitigation strategies and provide the engineering substantiation to demonstrate that risks are reduced to As Low As Reasonably Practicable (ALARP).</p>
+      </div>
+      <div class="approach-step">
+        <div class="step-number">04</div>
+        <div class="step-title">Report &amp; Assure</div>
+        <p class="step-desc">Clear, defensible documentation — Safety Case Reports, audit findings, and periodic reviews — that stand up to regulatory and independent scrutiny.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTORS -->
+<section id="sectors">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Industries We Serve</span>
+      <h2 class="section-title">Sectors</h2>
+    </div>
+    <div class="sectors-grid reveal">
+      <div class="sector-card">
+        <span class="sector-icon">🚆</span>
+        <div class="sector-name">Rail &amp; Transit</div>
+        <p class="sector-desc">Safety cases, RAMS, and engineering substantiation for mainline, metro, and light rail systems.</p>
+      </div>
+      <div class="sector-card">
+        <span class="sector-icon">⚡</span>
+        <div class="sector-name">Energy &amp; Utilities</div>
+        <p class="sector-desc">Hazard management and safety assurance for generation, transmission, and distribution assets.</p>
+      </div>
+      <div class="sector-card">
+        <span class="sector-icon">🏗️</span>
+        <div class="sector-name">Infrastructure</div>
+        <p class="sector-desc">Safety oversight for major civil and infrastructure projects from design through to handover.</p>
+      </div>
+      <div class="sector-card">
+        <span class="sector-icon">🏭</span>
+        <div class="sector-name">Process &amp; Industrial</div>
+        <p class="sector-desc">COMAH safety reports, HAZOP studies, and barrier management for high-hazard facilities.</p>
+      </div>
+      <div class="sector-card">
+        <span class="sector-icon">🛡️</span>
+        <div class="sector-name">Defence &amp; Aerospace</div>
+        <p class="sector-desc">System safety analysis and independent assessment aligned to Def Stan and MIL-STD requirements.</p>
+      </div>
+      <div class="sector-card">
+        <span class="sector-icon">🌊</span>
+        <div class="sector-name">Maritime &amp; Offshore</div>
+        <p class="sector-desc">Formal safety assessment and bow-tie analysis for marine and offshore operations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY VIWARD -->
+<section id="why">
+  <div class="container">
+    <div class="why-layout">
+      <div class="why-text reveal">
+        <span class="section-tag">Why Viward Safety</span>
+        <h2 class="section-title">Independent. Rigorous. Trusted.</h2>
+        <p class="section-desc" style="margin-bottom:0">Our independence is our greatest asset. We provide objective, technically credible safety advice unconstrained by commercial or design pressures.</p>
+        <ul class="why-list">
+          <li class="why-item">
+            <div class="why-bullet">✓</div>
+            <div>
+              <div class="why-item-title">Genuine Independence</div>
+              <div class="why-item-desc">No conflicts of interest. We act solely in the interest of safety and our client's regulatory obligations.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-bullet">✓</div>
+            <div>
+              <div class="why-item-title">Deep Technical Expertise</div>
+              <div class="why-item-desc">Senior engineers and safety specialists with decades of cross-sector experience.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-bullet">✓</div>
+            <div>
+              <div class="why-item-title">Defensible Deliverables</div>
+              <div class="why-item-desc">All outputs are structured to withstand regulatory review, audit, and independent scrutiny.</div>
+            </div>
+          </li>
+          <li class="why-item">
+            <div class="why-bullet">✓</div>
+            <div>
+              <div class="why-item-title">Full Lifecycle Support</div>
+              <div class="why-item-desc">From concept design through to operation, modification, and decommissioning.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="why-visual">
+          <div class="compliance-badge">
+            <div class="badge-item">
+              <div class="badge-dot"></div>
+              <span class="badge-text">ISO 31000 Risk Management Aligned</span>
+              <span class="badge-check">✓</span>
+            </div>
+            <div class="badge-item">
+              <div class="badge-dot"></div>
+              <span class="badge-text">ALARP Demonstration Framework</span>
+              <span class="badge-check">✓</span>
+            </div>
+            <div class="badge-item">
+              <div class="badge-dot amber"></div>
+              <span class="badge-text">Independent Safety Auditor Capability</span>
+              <span class="badge-check">✓</span>
+            </div>
+            <div class="badge-item">
+              <div class="badge-dot amber"></div>
+              <span class="badge-text">Formal Safety Assessment (FSA)</span>
+              <span class="badge-check">✓</span>
+            </div>
+            <div class="badge-item">
+              <div class="badge-dot"></div>
+              <span class="badge-text">Safety Case Report Authorship</span>
+              <span class="badge-check">✓</span>
+            </div>
+            <div class="badge-item">
+              <div class="badge-dot"></div>
+              <span class="badge-text">Regulatory Interface Support</span>
+              <span class="badge-check">✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Work With Us</span>
+      <h2 class="section-title">Get in Touch</h2>
+      <p class="section-desc">Whether you need a full safety case or targeted specialist support, we'd welcome a conversation about how Viward Safety can help.</p>
+    </div>
+    <div class="contact-layout reveal">
+      <div class="contact-info">
+        <div class="contact-detail">
+          <span class="contact-icon">📧</span>
+          <div>
+            <span class="contact-label">Email</span>
+            <span class="contact-val">info@viwardsafety.co.uk</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-icon">📞</span>
+          <div>
+            <span class="contact-label">Phone</span>
+            <span class="contact-val">+44 (0) 1234 567 890</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-icon">📍</span>
+          <div>
+            <span class="contact-label">Location</span>
+            <span class="contact-val">United Kingdom</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-icon">🕒</span>
+          <div>
+            <span class="contact-label">Hours</span>
+            <span class="contact-val">Monday – Friday, 08:30 – 17:30</span>
+          </div>
+        </div>
+
+        <div style="margin-top:2rem; padding: 1.5rem; border: 1px solid var(--border); background: var(--panel);">
+          <p style="font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; margin-bottom:0.75rem;">Response Commitment</p>
+          <p style="font-size:13px; color:var(--text-mid); line-height:1.7;">We aim to respond to all enquiries within one business day. For urgent matters, please call us directly.</p>
+        </div>
+      </div>
+
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label">First Name</label>
+            <input class="form-input" type="text" placeholder="Jane">
+          </div>
+          <div class="form-field">
+            <label class="form-label">Last Name</label>
+            <input class="form-input" type="text" placeholder="Smith">
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Organisation</label>
+          <input class="form-input" type="text" placeholder="Your Company Ltd">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="jane@company.co.uk">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Service Required</label>
+          <select class="form-select form-input">
+            <option value="">Select a service...</option>
+            <option>Hazard Identification &amp; Assessment</option>
+            <option>Safety Management Plan</option>
+            <option>Safety Case Report</option>
+            <option>Independent Safety Audit</option>
+            <option>Peer Review</option>
+            <option>Independent Technical Assessment</option>
+            <option>Engineering Substantiation</option>
+            <option>Periodic Review of Safety</option>
+            <option>Safety Committee Representation</option>
+            <option>Other / General Enquiry</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" placeholder="Tell us about your project, timeline, and what you need..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="align-self:flex-start">Send Enquiry →</button>
+        <div id="form-success" style="display:none; padding:12px 16px; border:1px solid var(--green); color:var(--green); font-family:'DM Mono',monospace; font-size:12px; letter-spacing:1px;">
+          ✓ &nbsp; Message sent — we'll be in touch shortly.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2025 Viward Safety Ltd. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <span class="footer-accred">Registered in England &amp; Wales</span>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('form-success').style.display = 'block';
+    e.target.reset();
+  }
+
+  // Nav active states
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--amber)' : '';
+    });
+  });
+</script>
+</body>
+</html>
