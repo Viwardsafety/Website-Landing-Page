@@ -325,8 +325,8 @@
   .why-item { display: flex; gap: 1.25rem; align-items: flex-start; }
   .why-bullet {
     width: 28px; height: 28px; flex-shrink: 0;
-    border: 1px solid var(--amber); display: grid; place-items: center;
-    color: var(--amber); font-size: 12px; font-family: 'DM Mono', monospace;
+    border: 1px solid var(--green); display: grid; place-items: center;
+    color: var(--green); font-size: 12px; font-family: 'DM Mono', monospace;
     margin-top: 2px;
   }
   .why-item-title { font-weight: 500; color: var(--white); font-size: 15px; margin-bottom: 4px; }
@@ -522,10 +522,6 @@
       </div>
       <div class="hero-stats">
         <div>
-          <span class="stat-val">ISO</span>
-          <span class="stat-label">Standards Aligned</span>
-        </div>
-        <div>
           <span class="stat-val">100%</span>
           <span class="stat-label">Independent Assessment</span>
         </div>
@@ -681,6 +677,67 @@
   </div>
 </section>
 
+<!-- EXPERIENCE -->
+<section id="experience" style="padding: 120px 0; background: var(--black);">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;">
+
+      <!-- Left: Big statement -->
+      <div class="reveal">
+        <span class="section-tag">Our Track Record</span>
+        <h2 class="section-title" style="font-size: clamp(48px, 7vw, 82px); line-height: 0.95; margin-bottom: 1.5rem;">
+          Over<br><span style="color: var(--amber);">10 Years</span><br>of Expertise
+        </h2>
+        <p style="font-size: 15px; color: var(--text-mid); line-height: 1.8; max-width: 440px;">
+          For more than a decade, Viward Safety Ltd has been embedded in the industries we serve — building the deep sector knowledge, relationships, and technical credibility that only comes from sustained, hands-on consultancy work.
+        </p>
+        <p style="font-size: 15px; color: var(--text-mid); line-height: 1.8; max-width: 440px; margin-top: 1rem;">
+          Our experience spans concept design through to operational assurance, equipping us to provide advice that is both technically rigorous and grounded in real-world delivery.
+        </p>
+      </div>
+
+      <!-- Right: Experience pillars -->
+      <div class="reveal">
+        <div style="display: flex; flex-direction: column; gap: 2px; background: var(--border);">
+
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.75rem 2rem; background: var(--deep); transition: background 0.3s;" onmouseenter="this.style.background='var(--panel)'" onmouseleave="this.style.background='var(--deep)'">
+            <span style="font-family:'Bebas Neue'; font-size: 36px; color: var(--amber); line-height:1; flex-shrink:0;">10+</span>
+            <div>
+              <div style="font-weight:500; color: var(--white); font-size:14px; margin-bottom:4px;">Years of Consultancy Practice</div>
+              <div style="font-size:13px; color:var(--text-dim); line-height:1.6;">A decade-plus of continuous safety and engineering consultancy across high-consequence industries.</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.75rem 2rem; background: var(--deep); transition: background 0.3s;" onmouseenter="this.style.background='var(--panel)'" onmouseleave="this.style.background='var(--deep)'">
+            <span style="font-family:'Bebas Neue'; font-size: 36px; color: var(--amber); line-height:1; flex-shrink:0;">✦</span>
+            <div>
+              <div style="font-weight:500; color: var(--white); font-size:14px; margin-bottom:4px;">Sector-Embedded Knowledge</div>
+              <div style="font-size:13px; color:var(--text-dim); line-height:1.6;">Our consultants have worked within the industries we advise — not just on the outside looking in.</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.75rem 2rem; background: var(--deep); transition: background 0.3s;" onmouseenter="this.style.background='var(--panel)'" onmouseleave="this.style.background='var(--deep)'">
+            <span style="font-family:'Bebas Neue'; font-size: 36px; color: var(--amber); line-height:1; flex-shrink:0;">✦</span>
+            <div>
+              <div style="font-weight:500; color: var(--white); font-size:14px; margin-bottom:4px;">Proven Regulatory Engagement</div>
+              <div style="font-size:13px; color:var(--text-dim); line-height:1.6;">Extensive experience interfacing with regulators, safety authorities, and independent assessors on behalf of clients.</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.75rem 2rem; background: var(--deep); transition: background 0.3s;" onmouseenter="this.style.background='var(--panel)'" onmouseleave="this.style.background='var(--deep)'">
+            <span style="font-family:'Bebas Neue'; font-size: 36px; color: var(--amber); line-height:1; flex-shrink:0;">✦</span>
+            <div>
+              <div style="font-weight:500; color: var(--white); font-size:14px; margin-bottom:4px;">Lifecycle-Wide Delivery</div>
+              <div style="font-size:13px; color:var(--text-dim); line-height:1.6;">From early concept hazard identification through to periodic reviews of operational systems — we've done it all.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- SECTORS -->
 <section id="sectors">
   <div class="container">
@@ -689,11 +746,6 @@
       <h2 class="section-title">Sectors</h2>
     </div>
     <div class="sectors-grid reveal">
-      <div class="sector-card">
-        <span class="sector-icon">🚆</span>
-        <div class="sector-name">Rail &amp; Transit</div>
-        <p class="sector-desc">Safety cases, RAMS, and engineering substantiation for mainline, metro, and light rail systems.</p>
-      </div>
       <div class="sector-card">
         <span class="sector-icon">⚡</span>
         <div class="sector-name">Energy &amp; Utilities</div>
@@ -705,19 +757,9 @@
         <p class="sector-desc">Safety oversight for major civil and infrastructure projects from design through to handover.</p>
       </div>
       <div class="sector-card">
-        <span class="sector-icon">🏭</span>
-        <div class="sector-name">Process &amp; Industrial</div>
-        <p class="sector-desc">COMAH safety reports, HAZOP studies, and barrier management for high-hazard facilities.</p>
-      </div>
-      <div class="sector-card">
         <span class="sector-icon">🛡️</span>
         <div class="sector-name">Defence &amp; Aerospace</div>
         <p class="sector-desc">System safety analysis and independent assessment aligned to Def Stan and MIL-STD requirements.</p>
-      </div>
-      <div class="sector-card">
-        <span class="sector-icon">🌊</span>
-        <div class="sector-name">Maritime &amp; Offshore</div>
-        <p class="sector-desc">Formal safety assessment and bow-tie analysis for marine and offshore operations.</p>
       </div>
     </div>
   </div>
@@ -765,23 +807,18 @@
       <div class="reveal">
         <div class="why-visual">
           <div class="compliance-badge">
-            <div class="badge-item">
-              <div class="badge-dot"></div>
-              <span class="badge-text">ISO 31000 Risk Management Aligned</span>
-              <span class="badge-check">✓</span>
-            </div>
-            <div class="badge-item">
+          <div class="badge-item">
               <div class="badge-dot"></div>
               <span class="badge-text">ALARP Demonstration Framework</span>
               <span class="badge-check">✓</span>
             </div>
             <div class="badge-item">
-              <div class="badge-dot amber"></div>
+              <div class="badge-dot"></div>
               <span class="badge-text">Independent Safety Auditor Capability</span>
               <span class="badge-check">✓</span>
             </div>
             <div class="badge-item">
-              <div class="badge-dot amber"></div>
+              <div class="badge-dot"></div>
               <span class="badge-text">Formal Safety Assessment (FSA)</span>
               <span class="badge-check">✓</span>
             </div>
@@ -823,23 +860,17 @@
           <span class="contact-icon">📞</span>
           <div>
             <span class="contact-label">Phone</span>
-            <span class="contact-val">+44 (0) 1234 567 890</span>
+            <span class="contact-val">+44 (0) 7975 929 079</span>
           </div>
         </div>
         <div class="contact-detail">
           <span class="contact-icon">📍</span>
           <div>
             <span class="contact-label">Location</span>
-            <span class="contact-val">United Kingdom</span>
+            <span class="contact-val">Tadley, United Kingdom</span>
           </div>
         </div>
-        <div class="contact-detail">
-          <span class="contact-icon">🕒</span>
-          <div>
-            <span class="contact-label">Hours</span>
-            <span class="contact-val">Monday – Friday, 08:30 – 17:30</span>
-          </div>
-        </div>
+
 
         <div style="margin-top:2rem; padding: 1.5rem; border: 1px solid var(--border); background: var(--panel);">
           <p style="font-family:'DM Mono',monospace; font-size:11px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; margin-bottom:0.75rem;">Response Commitment</p>
