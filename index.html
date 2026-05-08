@@ -108,6 +108,29 @@
   }
   .nav-cta:hover { background: var(--amber); color: var(--black); }
 
+  /* Hamburger button */
+  .nav-toggle {
+    display: none;
+    background: transparent; border: 1px solid var(--border);
+    width: 40px; height: 40px; cursor: pointer;
+    padding: 0; align-items: center; justify-content: center;
+    color: var(--amber);
+  }
+  .nav-toggle span {
+    display: block; width: 18px; height: 2px; background: currentColor;
+    position: relative;
+  }
+  .nav-toggle span::before,
+  .nav-toggle span::after {
+    content: ''; position: absolute; left: 0; width: 18px; height: 2px; background: currentColor;
+    transition: transform 0.2s;
+  }
+  .nav-toggle span::before { top: -6px; }
+  .nav-toggle span::after { top: 6px; }
+  .nav-toggle.open span { background: transparent; }
+  .nav-toggle.open span::before { transform: translateY(6px) rotate(45deg); }
+  .nav-toggle.open span::after { transform: translateY(-6px) rotate(-45deg); }
+
   /* ─── HERO ─── */
   #hero {
     min-height: 100vh;
@@ -473,14 +496,62 @@
     .approach-step:nth-child(3) { border-bottom: none; }
     .sectors-grid { grid-template-columns: 1fr 1fr; }
     .why-layout, .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
-    .nav-links { display: none; }
     .hero-stats { gap: 2rem; flex-wrap: wrap; }
+    /* Mobile nav drawer */
+    .nav-toggle { display: inline-flex; }
+    .nav-cta { display: none; }
+    .nav-links {
+      position: fixed; top: 64px; left: 0; right: 0;
+      flex-direction: column; gap: 0;
+      background: rgba(10,12,15,0.98);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem 2rem;
+      transform: translateY(-120%);
+      transition: transform 0.3s ease;
+      max-height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+    .nav-links.open { transform: translateY(0); }
+    .nav-links li { border-bottom: 1px solid var(--border); }
+    .nav-links a { display: block; padding: 1rem 0; font-size: 13px; }
+    .nav-links .mobile-cta {
+      margin-top: 1rem; display: inline-block;
+      padding: 12px 24px; border: 1px solid var(--amber); color: var(--amber);
+    }
+    /* Experience section: stack inline grid */
+    #experience > .container > div {
+      grid-template-columns: 1fr !important;
+      gap: 3rem !important;
+    }
+    /* Reduce big section padding */
+    #services, #approach, #sectors, #why, #contact, #experience { padding: 80px 0 !important; }
+    .container { padding: 0 1.25rem; }
+    .section-header { margin-bottom: 2.5rem; }
+    .hero-stats { margin-top: 3rem; padding-top: 2rem; }
+    .stat-val { font-size: 36px; }
+    .service-group { padding: 2rem 1.5rem; }
+    .why-visual { padding: 1.5rem; }
+    .footer-inner { flex-direction: column; align-items: flex-start; text-align: left; }
+    .footer-links { flex-wrap: wrap; gap: 1.25rem; }
   }
 
   @media (max-width: 600px) {
     .approach-grid { grid-template-columns: 1fr; }
+    .approach-step { border-right: none; }
     .sectors-grid { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
+    .hero-title { font-size: clamp(48px, 13vw, 72px) !important; }
+    .hero-sub { font-size: 15px; }
+    .btn-primary, .btn-ghost { padding: 12px 24px; font-size: 11px; width: 100%; text-align: center; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .hero-stats { gap: 1.5rem; }
+    .group-title { font-size: 24px; }
+    .ticker { animation-duration: 40s; }
+    .badge-item { padding: 0.85rem 1rem; }
+    .badge-text { font-size: 11px; }
+    /* Experience pillars: tighten */
+    #experience h2 { font-size: clamp(40px, 12vw, 60px) !important; }
   }
 </style>
 </head>
@@ -498,8 +569,11 @@
       <li><a href="#approach">Approach</a></li>
       <li><a href="#sectors">Sectors</a></li>
       <li><a href="#why">Why Us</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="mobile-cta">Get in Touch</a></li>
     </ul>
     <a href="#contact" class="nav-cta">Get in Touch</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
   </div>
 </nav>
 
@@ -951,6 +1025,24 @@
     e.preventDefault();
     document.getElementById('form-success').style.display = 'block';
     e.target.reset();
+  }
+
+  // Mobile nav toggle
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinksEl = document.querySelector('.nav-links');
+  if (navToggle && navLinksEl) {
+    navToggle.addEventListener('click', () => {
+      const open = navLinksEl.classList.toggle('open');
+      navToggle.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    navLinksEl.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinksEl.classList.remove('open');
+        navToggle.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
   }
 
   // Nav active states
